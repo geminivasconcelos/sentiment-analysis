@@ -1,1 +1,30 @@
-estou positivo
+from textblob import TextBlob
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+# Baixar os recursos do NLTK necessários para a análise de sentimento
+nltk.download('vader_lexicon')
+nltk.download('punkt')  # Faça o download dos dados de tokenização do NLTK
+
+
+texto = "Carol está muito bonita hoje"
+
+# Crie uma instância de TextBlob
+blob = TextBlob(texto)
+
+# Obtenha a polaridade do sentimento (-1 a 1)
+polaridade = blob.sentiment.polarity
+print(polaridade)
+
+# Classifique a polaridade em positiva, negativa ou neutra
+if polaridade > 0:
+    sentimento = "positivo"
+elif polaridade == 0:
+    sentimento = "neutro"
+else:
+    sentimento = "negativo"
+
+# Imprima o resultado
+print(f"Texto: '{texto}'")
+print(f"Sentimento: {sentimento}")
+print(f"Polaridade: {polaridade}")

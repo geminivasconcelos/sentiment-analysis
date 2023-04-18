@@ -1,47 +1,33 @@
+from textblob import TextBlob
 import nltk
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-# Baixar os recursos do NLTK necessários para a análise de sentimento
+# Baixar recursos do NLTK
 nltk.download('vader_lexicon')
 
 
-#abre o arquivo, você passa o nome do arquivo e o objetivo dele
-with open('email.txt', 'r') as arquivo:
-    # Leia o conteúdo do arquivo
-    avaliacoes = arquivo.read()
-    # Faça o processamento necessário com o conteúdo do arquivo
-    print(avaliacoes)
+# Criar uma função para análise de sentimento
+def analisar_sentimento(texto):
+    '''
+    Função para realizar análise de sentimento usando TextBlob.
+    Retorna uma tupla com a polaridade (positiva, negativa ou neutra)
+    e a subjetividade do texto.
+    '''
+    blob = TextBlob(texto)
+    polaridade = blob.sentiment.polarity
+    subjetividade = blob.sentiment.subjectivity
+    
+    if polaridade > 0:
+        sentimento = 'positivo'
+    elif polaridade < 0:
+        sentimento = 'negativo'
+    else:
+        sentimento = 'neutro'
+    
+    return sentimento, polaridade, subjetividade
 
-
-    # Inicializar o analisador de sentimento do NLTK
-analisador_sentimento = SentimentIntensityAnalyzer()
-
-# Realizar a análise de sentimento para cada avaliação
-#for avaliacao in avaliacoes:
-    # Remover quebras de linha e caracteres especiais
-avaliacoes = avaliacoes.strip()
-    
-# Realizar a análise de sentimento
-resultado = analisador_sentimento.polarity_scores(avaliacoes)
-    
-# Obter a pontuação de sentimento positivo, negativo e neutro
-sentimento_positivo = resultado['pos']
-sentimento_negativo = resultado['neg']
-sentimento_neutro = resultado['neu']
-    
-    # Determinar o sentimento geral com base na pontuação
-sentimento_geral = ''
-if sentimento_positivo > sentimento_negativo:
-    sentimento_geral = 'Positivo'
-elif sentimento_negativo > sentimento_positivo:
-     sentimento_geral = 'Negativo'
-else:
-    sentimento_geral = 'Neutro'
-    
-# Exibir o resultado da análise de sentimento
-print('Avaliação: ', avaliacoes)
-print('Sentimento geral: ', sentimento_geral)
-print('Sentimento positivo: ', sentimento_positivo)
-print('Sentimento negativo: ', sentimento_negativo)
-print('Sentimento neutro: ', sentimento_neutro)
-print('---')
+# Exemplo de uso
+texto = "Eu odeio essa nova música! É horrível!"
+sentimento, polaridade, subjetividade = analisar_sentimento(texto)
+print("Sentimento: ", sentimento)
+print("Polaridade: ", polaridade)
+print("Subjetividade: ", subjetividade)
