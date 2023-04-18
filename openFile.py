@@ -1,47 +1,56 @@
+from textblob import TextBlob
+from googletrans import Translator
 import nltk
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import requests
 
-# Baixar os recursos do NLTK necessários para a análise de sentimento
+# Baixar recursos do NLTK
 nltk.download('vader_lexicon')
 
 
-#abre o arquivo, você passa o nome do arquivo e o objetivo dele
-with open('email.txt', 'r') as arquivo:
-    # Leia o conteúdo do arquivo
-    avaliacoes = arquivo.read()
-    # Faça o processamento necessário com o conteúdo do arquivo
-    print(avaliacoes)
+# Criar uma função para análise de sentimento
+def analisar_sentimento(texto):
+    '''
+    Função para realizar análise de sentimento usando TextBlob.
+    Retorna uma tupla com a polaridade (positiva, negativa ou neutra)
+    e a subjetividade do texto.
+    '''
+    blob = TextBlob(texto)
+    polaridade = blob.sentiment.polarity
+    subjetividade = blob.sentiment.subjectivity
+    
+    if polaridade > 0:
+        sentimento = 'positivo'
+    elif polaridade < 0:
+        sentimento = 'negativo'
+    else:
+        sentimento = 'neutro'
+    
+    return sentimento, polaridade, subjetividade
 
 
-    # Inicializar o analisador de sentimento do NLTK
-analisador_sentimento = SentimentIntensityAnalyzer()
+translator = Translator()
 
-# Realizar a análise de sentimento para cada avaliação
-#for avaliacao in avaliacoes:
-    # Remover quebras de linha e caracteres especiais
-avaliacoes = avaliacoes.strip()
-    
-# Realizar a análise de sentimento
-resultado = analisador_sentimento.polarity_scores(avaliacoes)
-    
-# Obter a pontuação de sentimento positivo, negativo e neutro
-sentimento_positivo = resultado['pos']
-sentimento_negativo = resultado['neg']
-sentimento_neutro = resultado['neu']
-    
-    # Determinar o sentimento geral com base na pontuação
-sentimento_geral = ''
-if sentimento_positivo > sentimento_negativo:
-    sentimento_geral = 'Positivo'
-elif sentimento_negativo > sentimento_positivo:
-     sentimento_geral = 'Negativo'
+text = input("Escreva o texto/frase para ser analisado: ")
+translated_text = translator.translate(text, src='pt', dest='en')
+print(translated_text.text)
+
+
+sentimento, polaridade, subjetividade = analisar_sentimento(translated_text.text)
+print("Sentimento: ", sentimento)
+print("Polaridade: ", polaridade)
+print("Subjetividade: ", subjetividade)
+
+
+#observação: a analise de sentimento aqui está sendo feito em inglês, usei a biblioteca translate para pegar o texto digitado em português
+# e traduzir para inglês e só então analisar a frase dita pelo usário e infomar o sentimento, subjetividade e polaridade;
+
+
+#------------------------------------------------------------------------------------------------------
+#TESTANDO A IMPORTAÇÃO COM PYTHON
+response = requests.get('https://api.coindesk.com/v1/bpi/currentprice/USD.json')
+if response.status_code == 200:
+    data = response.json()
+    price = data['bpi']['USD']['rate']
+    print(f"O preço atual do Bitcoin em dólares é: {price}")
 else:
-    sentimento_geral = 'Neutro'
-    
-# Exibir o resultado da análise de sentimento
-print('Avaliação: ', avaliacoes)
-print('Sentimento geral: ', sentimento_geral)
-print('Sentimento positivo: ', sentimento_positivo)
-print('Sentimento negativo: ', sentimento_negativo)
-print('Sentimento neutro: ', sentimento_neutro)
-print('---')
+    print(f"Erro ao fazer a requisição: {response.status_code}")
