@@ -6,8 +6,6 @@ import requests
 # Baixar recursos do NLTK
 nltk.download('vader_lexicon')
 
-
-# Criar uma função para análise de sentimento
 def analisar_sentimento(texto):
     '''
     Função para realizar análise de sentimento usando TextBlob.
@@ -27,18 +25,21 @@ def analisar_sentimento(texto):
     
     return sentimento, polaridade, subjetividade
 
+# Criar uma função para análise de sentimento
 
+entrada_analise = input('1 - Analisar texto meu.\n2 - Analisar outro texto\n')
 translator = Translator()
 
-text = input("Escreva o texto/frase para ser analisado: ")
-translated_text = translator.translate(text, src='pt', dest='en')
-print(translated_text.text)
-
-
-sentimento, polaridade, subjetividade = analisar_sentimento(translated_text.text)
-print("Sentimento: ", sentimento)
-print("Polaridade: ", polaridade)
-print("Subjetividade: ", subjetividade)
+if(entrada_analise == '1'):
+    text = input("Escreva o texto/frase para ser analisado: ")
+    translated_text = translator.translate(text, src='pt', dest='en')
+    print(translated_text.text)
+    sentimento, polaridade, subjetividade = analisar_sentimento(translated_text.text)
+    print("Sentimento: ", sentimento)
+    print("Polaridade: ", polaridade)
+    print("Subjetividade: ", subjetividade)
+else:
+    print('é um teste')
 
 
 #observação: a analise de sentimento aqui está sendo feito em inglês, usei a biblioteca translate para pegar o texto digitado em português
