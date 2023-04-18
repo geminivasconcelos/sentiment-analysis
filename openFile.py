@@ -1,6 +1,7 @@
 from textblob import TextBlob
 from googletrans import Translator
 import nltk
+import requests
 
 # Baixar recursos do NLTK
 nltk.download('vader_lexicon')
@@ -42,3 +43,14 @@ print("Subjetividade: ", subjetividade)
 
 #observação: a analise de sentimento aqui está sendo feito em inglês, usei a biblioteca translate para pegar o texto digitado em português
 # e traduzir para inglês e só então analisar a frase dita pelo usário e infomar o sentimento, subjetividade e polaridade;
+
+
+#------------------------------------------------------------------------------------------------------
+#TESTANDO A IMPORTAÇÃO COM PYTHON
+response = requests.get('https://api.coindesk.com/v1/bpi/currentprice/USD.json')
+if response.status_code == 200:
+    data = response.json()
+    price = data['bpi']['USD']['rate']
+    print(f"O preço atual do Bitcoin em dólares é: {price}")
+else:
+    print(f"Erro ao fazer a requisição: {response.status_code}")
