@@ -2,7 +2,6 @@ from textblob import TextBlob
 from googletrans import Translator
 import nltk
 
-
 # Baixar recursos do NLTK
 nltk.download('vader_lexicon')
 
@@ -27,13 +26,10 @@ def analisar_sentimento(texto):
     
     return sentimento, polaridade, subjetividade
 
-# Exemplo de uso
-#texto = "I loved that movie. It's too amazing!"
-
 
 translator = Translator()
 
-text = input("Escreva o texto para ser analisado: ")
+text = input("Escreva o texto/frase para ser analisado: ")
 translated_text = translator.translate(text, src='pt', dest='en')
 print(translated_text.text)
 
@@ -44,4 +40,5 @@ print("Polaridade: ", polaridade)
 print("Subjetividade: ", subjetividade)
 
 
-#observação: a analise de sentimento aqui está sendo feito em inglês;
+#observação: a analise de sentimento aqui está sendo feito em inglês, usei a biblioteca translate para pegar o texto digitado em português
+# e traduzir para inglês e só então analisar a frase dita pelo usário e infomar o sentimento, subjetividade e polaridade;
