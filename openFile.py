@@ -45,12 +45,3 @@ print("Subjetividade: ", subjetividade)
 # e traduzir para inglês e só então analisar a frase dita pelo usário e infomar o sentimento, subjetividade e polaridade;
 
 
-#------------------------------------------------------------------------------------------------------
-#TESTANDO A IMPORTAÇÃO COM PYTHON
-response = requests.get('https://api.coindesk.com/v1/bpi/currentprice/USD.json')
-if response.status_code == 200:
-    data = response.json()
-    price = data['bpi']['USD']['rate']
-    print(f"O preço atual do Bitcoin em dólares é: {price}")
-else:
-    print(f"Erro ao fazer a requisição: {response.status_code}")
